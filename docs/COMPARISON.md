@@ -1,43 +1,54 @@
-# Comparison with what the Solana Foundation has funded
+# Comparison with what the Solana Foundation has funded, line by line
 
-Written 1 Nov 2026. The Foundation publishes grantee names and some RFP amounts but not
-applications, so this compares against the public RFP deliverable specs, two Foundation-funded
-tooling projects whose state at funding is documented, and the Foundation's own in-house
-conformance work. Ash's rule: match or beat every detail.
+Written 1 Nov 2026 (v2, after Ash asked for weeks-of-production quality). The Foundation
+publishes grantee names and RFP amounts but not applications, so "their pitch" below is
+reconstructed from the grantee's own announcement or the Foundation's RFP text, each
+fetched and quoted today. Ash's rule: match or beat every detail, and keep this note.
 
-## Reference points
+## 1. The grantees and how they pitched
 
-| Reference | Amount | What was funded | State at funding (as far as public) | Source |
-|---|---|---|---|---|
-| RFP: Codama Python renderer | $30,000 | A renderer generating Python clients from Codama IDL | Spec'd by the Foundation; applicant delivers | blog.colosseum.com Solana RFPs post |
-| RFP: Math library (fixed-point / big-number for SBF) | $45,000 | Audited math crate | Same | same |
-| RFP: Historical state verification | $275,000 | Research + implementation | Same | mpost.io RFP coverage |
-| RFP: Indexer tooling + discriminator DB | $160,000 (two RFPs) | Open-source data tooling | Same | same |
-| Trident (Ackee Blockchain) | Foundation grant, amount not public | Fuzzing framework for Anchor programs | Existing audit firm, working prototype | Ackee blog / Trident README |
-| Mithril (Overclock) | Foundation grant, amount not public | Go full-node verifier (client diversity) | Validator operator team, design doc | Overclock announcement |
-| pay-kit conformance harness (in-house, L. Galabru) | Foundation staff time | 619 protocol vectors, 9 SDK testees, rulings doc, CI matrix | Built Oct 2026 inside the Foundation | github.com/solana-foundation/pay-kit/pull/387 |
+| Grantee | Funded by | What they had when pitched | How they framed value | Numbers in the pitch | Source |
+|---|---|---|---|---|---|
+| **Trident** (Ackee Blockchain), Anchor fuzzing framework | Solana Foundation development grant, 2023 | Working tool (born as Trdelnik, Riptide hackathon 2022, Marinade community prize); an audit firm behind it | "The First Open-Source Fuzzer for Solana Programs"; fuzzing finds "unknown bugs and vulnerabilities, potentially preventing zero-day exploits" | None: no users, no bug counts, no benchmarks | ackee.xyz blog "Introducing Trident"; Colosseum Codex |
+| **sec3 / Soteria** (Coderrect), static analysis for Solana programs | Solana Foundation grant, Dec 2021 | Existing company with "fundings from top organizations", Fortune 500 customers, audit services | "In the race towards Web3, security is a grand challenge" | None | sec3.dev press release |
+| **Mithril** (Overclock), Go verifying client | Foundation-backed client-diversity work (amount not public) | Validator-operator team; alpha that relies on `getBlock` and can halt on mismatches; external audit under way | "advances client diversity", "lowers the cost of running validators" | None in the Codex write-up | Colosseum Codex 23 Jan 2026 |
+| **RFP: Codama Python renderer** | $30,000 RFP | Spec written by the Foundation | Deliverable-defined | Amount only | Colosseum RFP post |
+| **RFP: Math library** | $45,000 RFP | Same | Same | Amount only | same |
+| **RFP: Indexer tooling + discriminator DB** | $160,000 (two RFPs) | Same | Same | Amount only | mpost coverage |
+| **RFP: Historical state verification** | $275,000 RFP | Same | Same | Amount only | same |
+| **pay-kit conformance harness** (built in-house by Foundation staff, PR #387, 21 Oct 2026) | Staff time | 619 vectors, 9 SDK testees, rulings document, CI matrix, nightly variant corpus | "prove those independent implementations actually agree with each other" | Vector counts per intent; per-SDK pass / known-failing counts | pay-kit harness README, PR #387 |
+| Wave-one grantees (2020): Wormhole, WalletConnect, Orca, Validators.app... | Early ecosystem grants | Teams with products or well-known brands | "talented team and a strong vision" | None public | solana.com news, Nov 2020 |
 
-Observations:
-1. Tooling the Foundation pays for is **spec'd as concrete deliverables** (renderer, crate, harness), not as "we will research".
-2. **Client diversity and conformance are already Foundation priorities**: Mithril (second validator client), Firedancer conformance, and now pay-kit's harness built by Foundation staff. txconform is the same idea pointed at the layer nobody covers: client SDKs and wallets.
-3. Grantees had a **working prototype or a prior track record in the exact technique**.
+Patterns, stated plainly:
+1. **Funded tooling had a working thing and a specific gap claim.** Trident's gap claim was
+   a headline with no prior-art check; it was funded anyway because the tool existed.
+2. **Numbers were rare.** None of the three tooling pitches gave measured results. The only
+   number-dense artefact is the Foundation's own harness, which reports counts per SDK.
+3. **The Foundation now builds conformance tooling itself** (pay-kit harness). That is both
+   the risk ("we do this in-house") and the proof that they value it.
+4. **Deliverables beat vision.** Every RFP is a deliverable spec with a price.
 
-## Where txconform stands against each detail
+## 2. Line by line: theirs vs txconform
 
-| Detail past grantees showed | txconform at application time |
-|---|---|
-| Working code | 461 vectors generated, 6 testees run (5 SDKs plus the Rust SDK itself), full pipeline in 5 s on a cached build (`run.sh`), CI workflow, baseline gate |
-| Concrete findings | 5 divergence classes across 5 SDKs plus the Rust SDK's own laxness (FINDINGS.md F1-F6), each with the vector class that reproduces it, Agave's behaviour and the SDK's behaviour, plus 4 upstream issue drafts ready to post |
-| Validator-grade oracle | Agave's own crates (`agave-transaction-view` 9.0, `solana-runtime-transaction` 4.5, `solana-transaction` 6.0) run per vector, verdict recorded per layer. Generator's spec reading agreed with Agave on 461/461, so the spec text and the implementation were cross-checked too |
-| Cross-language | TypeScript (kit, web3.js 3.x, web3.js 1.x), Python (solders), Go (solana-go v2), Rust (SDK) today; vectors are language-neutral JSON |
-| Fits the Foundation's own work | Explicit plan to ship an adapter into pay-kit's `harness/vectors` format and to upstream vectors into kit's test fixtures |
-| Track record in the technique | Ash's merged `bitcoin/bips` PR #2273 (spec-only differential suite found two reference-implementation bugs in BIP-360) and merged `x402-foundation/x402` PR #3674 (byte-preserving transaction submission fix on Cardano; the same class of "re-serialization changes signed bytes" bug that F1 warns about on Solana) |
-| Prior grants | 0G Buildathon ($67), Genkai Agentic Superengineering ($200) |
-| License | Apache-2.0 |
-| Budget shape | Three milestones, each with a checkable deliverable, $30k total; smaller than the Foundation's smallest public RFP ($30k) relative to scope |
+| Detail | Best past grantee | txconform at application (1 Nov 2026) | Beats? |
+|---|---|---|---|
+| Working code | Trident: tool existed for 2 years | Oracle, generator, mutation corpus, 8 harnesses, diff, CI, baseline gate, pay-kit export, RPC job. Repo public, CI green | Match (younger, but complete pipeline) |
+| Measured results in the pitch | pay-kit harness: counts per SDK | 3,012 Agave-judged vectors, 63 classes, 8 testees, per-testee divergence counts, 8 findings with the vector that reproduces each, 15 s pipeline | Beat (only artefact with validator-judged numbers) |
+| Gap claim with prior-art check | Trident: none; sec3: none | PRIOR-ART.md: 9 rows, including the Foundation's own harness and why it does not cover this | Beat |
+| Judge | pay-kit: its own Rust implementation; solana-primitives: the Rust SDK | Agave's crates, three layers, verdict recorded per layer; cross-checked against spec reading (0 disagreements on hand-written vectors) | Beat |
+| Breadth of testees | pay-kit: 9 languages of one product | 8 independent implementations in 4 languages, including both Go SDKs, the Rust SDK and an independent Rust crate; plan for Java, Kotlin, Swift, Dart, C#, firmware | Match now, beat at M1 |
+| Findings landed upstream | Trident/sec3: n/a | 6 issue drafts ready (kit, web3.js 1.x, solders, solana-go v2, gagliardetto, solana-primitives); none posted yet (Ash's click) | Behind until posted |
+| Fits Foundation's current direction | Mithril: client diversity | Same idea one layer down; explicit pay-kit adapter in the plan and already exported | Match |
+| Team credibility | Ackee (audit firm), Coderrect (company), Overclock (validator) | Solo student; merged `bitcoin/bips` #2273 and `x402` #3674; Solana work: proofflow (Anchor, Arcium, SAS, CCTP), squad-treasury (Solana payouts, x402), genesis-solana-agent (Colosseum Agent Hackathon), p2mr-assurance-lab (BIP-360 conformance, 4 graded divergences) | Behind on brand, ahead on exactly-this-technique track record |
+| License | Apache-2.0 / MIT | Apache-2.0 | Match |
+| Budget shape | RFPs: fixed deliverable, $30k-$275k | $30k, three deliverable-gated milestones, M1 standalone | Match (smallest public RFP tier) |
+| Public-good durability | Mithril: a client others run | Vectors are JSON; M3 puts them into kit, solders, solana-go CI so they run without the author | Match |
 
-## What past grantees had that txconform does not
+## 3. What this comparison changed in the proposal
 
-- A company or audit-firm name (Ackee, Overclock). txconform is a solo student. Mitigation: the code already runs and found bugs; milestones are deliverable-gated; the Foundation can stop after M1.
-- Direct relationships with Foundation engineers. Mitigation: open the upstream issues before submitting so reviewers can see maintainers' responses, and offer the pay-kit adapter first.
-- Public Solana on-chain footprint (the form asks for Solana accounts). Ash has none yet. Mitigation: state it plainly; the deliverable is off-chain tooling.
+- Opening paragraph now answers the two rejection reasons first (in-house/AI; already
+  covered), because the Foundation's own harness is the obvious objection.
+- Replaced "five SDKs" with the measured eight-testee table and the 3,012-vector corpus.
+- Added the pay-kit export as a shipped artefact, not a promise.
+- Team section uses Ash's Solana repos (proofflow, squad-treasury, genesis-solana-agent) and
+  conformance repos (p2mr-assurance-lab), never Rein.

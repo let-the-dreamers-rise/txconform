@@ -86,7 +86,10 @@ def main():
             elif (not o["valid"]) and sdk_ok:
                 cats["ACCEPTS-INVALID"].append((vid, agave_reason(o)))
             elif o["valid"] and sdk_ok:
-                fd = field_diffs(norm_fields(o["fields"]), norm_fields(r["fields"])) if r["fields"] else ["fields: none produced"]
+                if r.get("fields_unavailable"):
+                    fd = []  # this harness cannot report parsed fields (e.g. the RPC path)
+                else:
+                    fd = field_diffs(norm_fields(o["fields"]), norm_fields(r["fields"])) if r["fields"] else ["fields: none produced"]
                 if fd:
                     cats["FIELD-MISMATCH"].append((vid, "; ".join(fd)))
                 re = r.get("reserialized_hex")

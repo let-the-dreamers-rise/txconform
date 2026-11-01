@@ -47,7 +47,7 @@ with open(out_path, "w") as out:
             continue
         v = json.loads(line)
         rec = {"id": v["id"], "harness": harness, "decode": False, "error": None, "sanitize": None,
-               "fields": None, "reserialized_hex": None}
+               "fields": None, "fields_unavailable": True, "reserialized_hex": None}
         if v.get("loaded_writable_hex") or v.get("loaded_readonly_hex"):
             rec["skip"] = True
             rec["error"] = "v0 lookup tables not present on local ledger"
@@ -76,5 +76,9 @@ with open(out_path, "w") as out:
             rec["sanitize"] = True
             err = resp["result"]["value"].get("err")
             rec["error"] = None if err is None else f"simulation: {json.dumps(err)[:160]}"
+            # Transaction-level load errors are the runtime's sanitize verdict surfacing late,
+            # not account-state failures: count them as rejects of the transaction.
+            if err in ("AccountLoadedTwice", "TooManyAccountLocks", "SanitizeFailure", "DuplicateInstruction"):
+                rec["sanitize"] = False
         out.write(json.dumps(rec) + "\n")
 print("done", harness)

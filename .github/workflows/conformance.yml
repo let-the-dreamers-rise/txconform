@@ -87,6 +87,10 @@ jobs:
           sleep 5
       - name: Run RPC harness
         run: python3 harness/rpc/rpc_harness.py vectors/vectors.jsonl results/rpc.jsonl http://127.0.0.1:8899
+      - name: Send probe (do RPC-accepted mutations land?)
+        run: |
+          pip install -r harness/py/requirements.txt
+          python3 harness/rpc/send_probe.py results/send-probe.json http://127.0.0.1:8899
       - name: Report (RPC vs oracle)
         run: python3 txconform.py --results results/rpc.jsonl --report results/REPORT-rpc.md --details results/details-rpc.json
       - uses: actions/upload-artifact@v4
@@ -94,6 +98,7 @@ jobs:
           name: txconform-rpc-results
           path: |
             results/rpc.jsonl
+            results/send-probe.json
             results/REPORT-rpc.md
             results/details-rpc.json
             validator.log
