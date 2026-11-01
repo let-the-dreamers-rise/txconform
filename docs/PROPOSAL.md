@@ -6,9 +6,9 @@ Repository: https://github.com/let-the-dreamers-rise/txconform (Apache-2.0, CI g
 
 ## Why this is not something you already have, and not something an AI prompt gives you
 
-The Foundation already funds conformance: Firedancer and Mithril are checked against Agave,
-and ten days ago your own team merged a conformance harness into pay-kit (PR #387, 619
-vectors, nine SDKs). txconform is the layer none of those cover: **the transaction wire
+The ecosystem already does conformance for validators (Firedancer and Mithril are checked
+against Agave), and last month your own team merged a conformance harness into pay-kit
+(PR #387, 619 vectors, nine SDKs). txconform is the layer none of those cover: **the transaction wire
 format as read by client SDKs, wallets and payment verifiers, judged by Agave's own parser
 crates.** pay-kit's vectors are payment-protocol cases judged by pay-kit's Rust
 implementation, curated by hand, with no rulings on config-mask bits, trailing bytes, heap
@@ -35,7 +35,9 @@ attached. txconform is that set and the tooling to run it: a spec-derived genera
 transactions plus 41 one-rule-broken classes plus thousands of bit-flip and truncation
 mutations), Agave's crates as the judge with the verdict recorded at each layer, a 100-line
 harness per SDK, a diff tool, a baseline gate, and CI. On 1 Nov 2026 it ran 3,012 vectors
-through eight implementations and found a divergence in every one of them.
+through eight implementations and found a divergence in every one of them, and its RPC-path job
+showed that Agave's own RPC accepts a transaction its block producer drops, returning a
+signature for something that never lands.
 
 ## The problem, precisely
 
@@ -59,7 +61,7 @@ instructions that became no-ops, and signatures moved to the end.
 | Oracle (Rust) | Runs each vector through `agave-transaction-view` (packet parse + sanitize), `solana-runtime-transaction` (static and resolved: limits, heap, duplicates) and the `solana-transaction` SDK; records each layer's verdict and canonical fields. Spec reading vs Agave: 0 disagreements on all hand-written vectors |
 | Testees | `@solana/kit` 8.6.0, `@solana/web3.js` 3.1.1 and 1.99.0, `solders` 0.29.0, `solana-go` v2.2.0, `gagliardetto/solana-go` v1.25.0, Rust SDK `solana-transaction` 6.0.0, `solana-primitives` 0.3.0 |
 | Diff + report | rejects-valid, accepts-invalid, field-mismatch, round-trip per testee per class; `results/REPORT.md` |
-| CI | weekly against latest releases; baseline gate fails on any new divergence class; second job sends every vector to `simulateTransaction` on a `solana-test-validator` from the latest Agave release |
+| CI | weekly against latest releases; baseline gate fails on any new divergence class; second job sends every vector to `simulateTransaction` on a `solana-test-validator` from the latest Agave release and runs an end-to-end send probe (does an RPC-accepted mutation land?) |
 | pay-kit export | the Agave-rejected vectors in pay-kit's `verify-transaction` vector format (`expect reject / invalid-payload`), ready to propose upstream |
 | Run time | about 15 s for the whole pipeline on a warm build |
 
@@ -76,8 +78,8 @@ Results on 1 Nov 2026 (3,012 vectors: 1,681 valid, 1,331 invalid):
 | `gagliardetto/solana-go` v1.25.0 | 0 | 3 | 0 |
 | `solana-primitives` 0.3.0 | 0 | 1 | 0 |
 
-Findings (`FINDINGS.md`, with the vector class that reproduces each and six upstream issue
-drafts in `upstream/`):
+Findings (`FINDINGS.md`, with the vector class that reproduces each and seven upstream issue
+drafts in `upstream/`, including one for Anza):
 
 | # | Finding |
 |---|---|
@@ -89,9 +91,12 @@ drafts in `upstream/`):
 | F6 | the Rust SDK's `sanitize()` is laxer than the validator (13 signatures, 65 addresses, 4,097 bytes, heap bounds, duplicates); ports that mirror the SDK inherit the gap. The oracle records which layer enforces each rule |
 | F7 | `gagliardetto/solana-go` has exactly the three gaps of `solana-go` v2 |
 | F8 | `solana-primitives` matches Agave on 3,011 of 3,012 vectors; the one gap is legacy duplicate addresses |
+| F9 | **Agave's own RPC** (`sendTransaction`, preflight on) accepts a transaction with one trailing byte, returns a signature, and the block producer drops it: measured end to end on an Agave 4.4.0 test validator in CI. The client gets no error, ever. The RPC deserializes with the SDK path (F2/F6); the TPU uses the strict packet view |
 
-None is a fund-loss bug today. They are the divergences that become one when a reserved bit
-is defined, a facilitator trusts its SDK, or a wallet shows a fee in the wrong unit. All eight
+None is a fund-loss bug today. F9 is a silent availability hole inside the node, and it shows
+the thesis in one table: two layers of the same validator disagree about the same bytes. The
+others are the divergences that become bugs when a reserved bit is defined, a facilitator
+trusts its SDK, or a wallet shows a fee in the wrong unit. All eight
 implementations pass their own test suites. The mutation corpus found no root cause beyond
 these, which is evidence the hand-written classes cover the format; it stays in CI so new
 releases are measured against 3,000 vectors.
