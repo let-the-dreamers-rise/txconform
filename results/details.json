@@ -1,4 +1,63 @@
 {
+ "solana-transaction@6.0.0": {
+  "ACCEPTS-INVALID": [
+   [
+    "v1-heap-not-1k-multiple-00416",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-below-min-00417",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-above-max-00418",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-zero-00419",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-duplicate-address-00420",
+    "runtime_resolved: AccountLoadedTwice"
+   ],
+   [
+    "v1-13-signatures-00427",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-addresses-00428",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-instructions-00429",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-size-4097-00430",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-trailing-byte-00431",
+    "view_parse: ParseError"
+   ],
+   [
+    "v1-extra-signature-00442",
+    "view_parse: ParseError"
+   ],
+   [
+    "legacy-size-over-1232-00449",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "legacy-duplicate-address-00450",
+    "runtime_resolved: AccountLoadedTwice"
+   ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
+ },
  "@solana/kit@8.6.0": {
   "ACCEPTS-INVALID": [
    [

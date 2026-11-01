@@ -83,7 +83,9 @@ out-of-range heap sizes, 4,097 bytes, trailing bytes and duplicate addresses; it
 is named `v1_sanitize_accepts_counts_above_old_policy_limits`. Those limits now live in
 `solana-runtime-transaction`. Ports that "mirror the SDK" (solana-go's comments say
 exactly that) inherit whichever layer they copied. The oracle records all three layers so
-that SDK authors can see which rule they are missing and where Agave keeps it.
+that SDK authors can see which rule they are missing and where Agave keeps it. Run as a
+testee in its own right (`tools/rust_sdk_results.py`), the Rust SDK accepts 13 of the 47
+Agave-invalid vectors, more than solders (5) or solana-go (3).
 
 ## Spec notes surfaced by the generator
 
@@ -91,7 +93,7 @@ that SDK authors can see which rule they are missing and where Agave keeps it.
   wire format allows 96, 42 and 255. Agave enforces the smaller numbers in the runtime
   layer, and none of the four non-Rust SDKs except solana-go enforce them anywhere.
 - A ComputeBudget instruction inside a v1 transaction is a valid no-op
-  (`v1-computebudget-ix-ignored`). All five SDKs correctly report the config from the mask
+  (`v1-computebudget-ix-ignored`). All six testees correctly report the config from the mask
   and not from the instruction, which is the behaviour the Larger Transaction Sizes guide
   asks wallets for.
 - Unset config fields have runtime defaults of 0 / 0 / 0 / 32 KiB. web3.js 1.x materialises

@@ -26,8 +26,8 @@ Observations:
 
 | Detail past grantees showed | txconform at application time |
 |---|---|
-| Working code | 461 vectors generated, 5 SDK harnesses run, full pipeline in 5 s on a cached build (`run.sh`), CI workflow, baseline gate |
-| Concrete findings | 5 divergence classes across 5 SDKs (FINDINGS.md F1-F5), each with the vector class that reproduces it, Agave's behaviour and the SDK's behaviour, plus 4 upstream issue drafts ready to post |
+| Working code | 461 vectors generated, 6 testees run (5 SDKs plus the Rust SDK itself), full pipeline in 5 s on a cached build (`run.sh`), CI workflow, baseline gate |
+| Concrete findings | 5 divergence classes across 5 SDKs plus the Rust SDK's own laxness (FINDINGS.md F1-F6), each with the vector class that reproduces it, Agave's behaviour and the SDK's behaviour, plus 4 upstream issue drafts ready to post |
 | Validator-grade oracle | Agave's own crates (`agave-transaction-view` 9.0, `solana-runtime-transaction` 4.5, `solana-transaction` 6.0) run per vector, verdict recorded per layer. Generator's spec reading agreed with Agave on 461/461, so the spec text and the implementation were cross-checked too |
 | Cross-language | TypeScript (kit, web3.js 3.x, web3.js 1.x), Python (solders), Go (solana-go v2), Rust (SDK) today; vectors are language-neutral JSON |
 | Fits the Foundation's own work | Explicit plan to ship an adapter into pay-kit's `harness/vectors` format and to upstream vectors into kit's test fixtures |

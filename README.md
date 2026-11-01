@@ -32,6 +32,7 @@ oracle/        Rust. (1) spec-derived generator: encodes legacy/v0/v1 transactio
 harness/ts     @solana/kit, @solana/web3.js 3.x, @solana/web3.js 1.x
 harness/py     solders
 harness/go     solana-go v2
+tools/rust_sdk_results.py  the Rust SDK itself as a testee (its decode/sanitize/re-encode columns from the oracle)
 txconform.py   diff: SDK result vs Agave verdict -> results/REPORT.md
 vectors/       vectors.jsonl (input) and oracle.jsonl (Agave verdicts + canonical fields)
 ```
@@ -55,6 +56,7 @@ reading of SIMD-0385.
 
 | harness | rejects valid | accepts invalid | field mismatch | round-trip not identical |
 |---|---|---|---|---|
+| `solana-transaction@6.0.0` (Rust SDK as testee) | 0 | 13 | 0 | 0 |
 | `@solana/kit@8.6.0` | 0 | 23 | 0 | 0 |
 | `@solana/web3.js@3.1.1` | 0 | 22 | 0 | 0 |
 | `@solana/web3.js@1.99.0` | 99 | 21 | 0 | 113 |

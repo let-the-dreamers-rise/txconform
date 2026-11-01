@@ -4,11 +4,32 @@ Vectors: 461 (oracle = Agave: agave-transaction-view + solana-runtime-transactio
 
 | harness | valid vectors | invalid vectors | rejects-valid | accepts-invalid | field-mismatch | roundtrip |
 |---|---|---|---|---|---|---|
+| solana-transaction@6.0.0 | 414 | 47 | 0 | 13 | 0 | 0 |
 | @solana/kit@8.6.0 | 414 | 47 | 0 | 23 | 0 | 0 |
 | @solana/web3.js@3.1.1 | 414 | 47 | 0 | 22 | 0 | 0 |
 | @solana/web3.js@1.99.0 | 414 | 47 | 99 | 21 | 0 | 113 |
 | solders@0.29.0 | 414 | 47 | 0 | 5 | 0 | 0 |
 | solana-go/v2@v2.2.0 | 414 | 47 | 0 | 3 | 0 | 0 |
+
+## solana-transaction@6.0.0
+
+### ACCEPTS-INVALID: 13 vectors in 13 classes
+
+| class | n | example | detail |
+|---|---|---|---|
+| `legacy-duplicate-address` | 1 | duplicate static address in a legacy tx (static sanitize passes; runtime rejects) | runtime_resolved: AccountLoadedTwice |
+| `legacy-size-over-1232` | 1 | legacy transaction of 1235 bytes (> 1232) | view_sanitize: SanitizeError |
+| `v1-13-signatures` | 1 | 13 signatures > max 12 | runtime_static: SanitizeFailure |
+| `v1-65-addresses` | 1 | 65 addresses > max 64 | runtime_static: SanitizeFailure |
+| `v1-65-instructions` | 1 | 65 instructions > max 64 | runtime_static: SanitizeFailure |
+| `v1-duplicate-address` | 1 | address 1 duplicates address 0 | runtime_resolved: AccountLoadedTwice |
+| `v1-extra-signature` | 1 | one more signature than num_required_signatures (trailing 64 bytes) | view_parse: ParseError |
+| `v1-heap-above-max` | 1 | heap 257 KiB > 256 KiB | runtime_static: SanitizeFailure |
+| `v1-heap-below-min` | 1 | heap 31 KiB < 32 KiB | runtime_static: SanitizeFailure |
+| `v1-heap-not-1k-multiple` | 1 | heap 32769 not a multiple of 1024 | runtime_static: SanitizeFailure |
+| `v1-heap-zero` | 1 | heap bit set with value 0 | runtime_static: SanitizeFailure |
+| `v1-size-4097` | 1 | 4097 bytes > max 4096 | runtime_static: SanitizeFailure |
+| `v1-trailing-byte` | 1 | one extra byte after the last signature | view_parse: ParseError |
 
 ## @solana/kit@8.6.0
 

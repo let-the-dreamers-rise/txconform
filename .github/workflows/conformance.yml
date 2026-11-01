@@ -41,7 +41,8 @@ jobs:
           ./harness-go ../../vectors/vectors.jsonl ../../results/solana-go.jsonl
       - name: Report
         run: |
-          python3 txconform.py --results results/kit.jsonl results/web3js3.jsonl results/web3js1.jsonl results/solders.jsonl results/solana-go.jsonl
+          python3 tools/rust_sdk_results.py vectors/oracle.jsonl results/rust-sdk.jsonl oracle/Cargo.lock
+          python3 txconform.py --results results/rust-sdk.jsonl results/kit.jsonl results/web3js3.jsonl results/web3js1.jsonl results/solders.jsonl results/solana-go.jsonl
       - uses: actions/upload-artifact@v4
         with:
           name: txconform-results

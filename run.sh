@@ -13,5 +13,6 @@ mkdir -p vectors results
 PY=${PYTHON:-python3}
 $PY harness/py/harness_solders.py vectors/vectors.jsonl results/solders.jsonl
 ( cd harness/go && go build -o harness-go . && ./harness-go ../../vectors/vectors.jsonl ../../results/solana-go.jsonl )
-python3 txconform.py --results results/kit.jsonl results/web3js3.jsonl results/web3js1.jsonl results/solders.jsonl results/solana-go.jsonl > /dev/null
+python3 tools/rust_sdk_results.py vectors/oracle.jsonl results/rust-sdk.jsonl oracle/Cargo.lock
+python3 txconform.py --results results/rust-sdk.jsonl results/kit.jsonl results/web3js3.jsonl results/web3js1.jsonl results/solders.jsonl results/solana-go.jsonl > /dev/null
 echo "report: results/REPORT.md"
