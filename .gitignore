@@ -1,0 +1,5 @@
+oracle/target/
+harness/ts/node_modules/
+harness/go/harness-go
+.venv/
+__pycache__/

@@ -1,0 +1,107 @@
+# Findings (1 November 2026)
+
+Each finding lists the vector class to reproduce it (`vectors/vectors.jsonl`, regenerate
+with `./run.sh`), what Agave does, what the SDK does, and why it matters. Severity is my
+assessment; maintainers may disagree. Nothing here is a fund-loss bug. The common thread
+is that each SDK re-derived SIMD-0385 on its own and no two agree with the validator at the
+edges.
+
+## F1. `@solana/kit` 8.6.0 accepts reserved config-mask bits that Agave rejects
+
+- Vectors: `v1-mask-unknown-bit` (bit 5 set, no value word), `v1-mask-unknown-bit-with-value`.
+- Agave: `agave-transaction-view` rejects any mask with bits outside `0b1_1111`
+  (`transaction_config_frame.rs`, `sanitize_mask`), and the Rust SDK's wincode reader rejects
+  it too with the comment that unknown bits "would be silently dropped on re-serialization
+  (this message is signed, so that invalidates the signature)".
+- kit: `getCompiledTransactionMessageDecoder` decodes the message, reports `configMask: 36`,
+  reads values only for the bits it knows, and `decompileTransactionMessage` succeeds.
+  With the value word present (the layout a future SIMD would use), decoding fails with the
+  unrelated error `Codec [u8] cannot decode empty byte arrays` because the instruction
+  headers are read from the wrong offset.
+- `@solana/web3.js` 3.1.1, built on kit, does reject: `Unexpected bits set in the transaction
+  config mask`. So the check exists one layer up but not in the codec most wallets will call.
+- Why it matters: a signer that decodes with kit, shows the four known fields, and signs
+  has signed over configuration it did not display. Today no such bit is defined, so this is
+  forward-compatibility hygiene, but it is exactly the class the Agave comment warns about.
+- Suggested fix: reject `configMask & ~0b11111` and odd priority-fee pairs in the compiled
+  message decoder; size `configValues` by `popcount(mask)`.
+
+## F2. Every SDK accepts trailing bytes and an extra trailing signature; the validator does not
+
+- Vectors: `v1-trailing-byte`, `v1-extra-signature` (64 extra bytes after the message).
+- Agave: `TransactionFrame::try_new` requires the frame to end exactly at the buffer end
+  (`ParseError`).
+- kit 8.6.0, web3.js 3.1.1, solders 0.29.0 and the Rust SDK `wincode::deserialize` all decode
+  successfully and report the header-specified number of signatures. solana-go 2.2.0
+  rejects both. web3.js 1.99.0 rejects the trailing byte but accepts the extra signature.
+- Why it matters: anything that verifies a client-supplied transaction before relaying it
+  (x402 facilitators, paymasters, co-signers, bundlers) can accept bytes that no validator
+  will ever include. The transaction simply never lands, which is an availability and
+  accounting problem rather than theft, but it is a divergence that should be documented
+  or closed (`createDecoderThatConsumesEntireByteArray` exists in kit for this purpose).
+
+## F3. `solana-go` v2.2.0 `Sanitize()` misses size limits and legacy/v0 duplicates
+
+- Vectors: `legacy-size-over-1232` (1,235 bytes), `v1-size-4097`, `legacy-duplicate-address`.
+- Agave: 1,232-byte limit for legacy/v0 is enforced in the view sanitizer; 4,096 for v1 and
+  duplicate addresses in `solana-runtime-transaction`.
+- solana-go: decodes and `Sanitize()` returns nil for all three. Its `sanitizeV1` checks
+  duplicates, but `sanitizeLegacy` and `sanitizeV0` do not, and no path checks the serialized
+  size. (It is otherwise the strictest SDK tested: it rejects 13 signatures, 65 addresses,
+  heap bounds and trailing bytes, which the Rust SDK itself does not.)
+- Suggested fix: add `len(data) <= 1232 / 4096` by version in `TransactionFromBytes`, and a
+  duplicate check for legacy/v0 static keys.
+
+## F4. `@solana/web3.js` 1.99.0 fails to read valid v1 transactions with a priority fee above 2^53
+
+- Vectors: `v1-priority-fee-only`, `v1-config-max-values`, 97 of 200 `v1-random`.
+- Agave accepts any u64 priority fee at the format level (the fee is simply charged).
+- web3.js 1.x `decodeU64` asserts `value <= Number.MAX_SAFE_INTEGER`
+  (`lib/index.cjs.js:1172`) and throws `Expected u64 value to be within the safe integer
+  range`. The 3.x line uses BigInt and is unaffected.
+- Why it matters: a block reader or indexer on web3.js 1.x throws on such a transaction.
+  A fee above 9,007 TSOL cannot actually be paid, so this is robustness, not exploitability;
+  it is still a valid-rejected conformance failure. Also confirmed: 1.x cannot serialize v1
+  (`Serialization of version 1 transaction messages is not supported`), which is documented
+  read-only support, and it names the field `priorityFee` where 3.x says `priorityFeeLamports`.
+
+## F5. `solders` 0.29.0 documents the v1 priority fee in micro-lamports
+
+- `TransactionConfig.__doc__`: "priority_fee (Optional[int]): The priority fee in
+  micro-lamports."
+- SIMD-0385 and Agave: the field is the **total** priority fee in **lamports**. Every other
+  SDK tested names it `priority_fee_lamports`/`priorityFeeLamports`. The wire value solders
+  produces is correct; the documentation tells a Python developer to supply a number that is
+  one million times too large (or, reading it as per-CU, to compute the wrong total).
+- Suggested fix: one-line docstring change plus a rename alias `priority_fee_lamports`.
+
+## F6. The Rust SDK's `sanitize()` is not the validator's acceptance test (layer map)
+
+Not a bug, but the fact that makes shared vectors necessary. `solana-transaction` 6.0.0
+`VersionedTransaction::sanitize` accepts 13 signatures, 65 addresses, 65 instructions,
+out-of-range heap sizes, 4,097 bytes, trailing bytes and duplicate addresses; its own test
+is named `v1_sanitize_accepts_counts_above_old_policy_limits`. Those limits now live in
+`solana-runtime-transaction`. Ports that "mirror the SDK" (solana-go's comments say
+exactly that) inherit whichever layer they copied. The oracle records all three layers so
+that SDK authors can see which rule they are missing and where Agave keeps it.
+
+## Spec notes surfaced by the generator
+
+- SIMD-0385's constraint table says 64 addresses, 12 signatures and 64 instructions; the
+  wire format allows 96, 42 and 255. Agave enforces the smaller numbers in the runtime
+  layer, and none of the four non-Rust SDKs except solana-go enforce them anywhere.
+- A ComputeBudget instruction inside a v1 transaction is a valid no-op
+  (`v1-computebudget-ix-ignored`). All five SDKs correctly report the config from the mask
+  and not from the instruction, which is the behaviour the Larger Transaction Sizes guide
+  asks wallets for.
+- Unset config fields have runtime defaults of 0 / 0 / 0 / 32 KiB. web3.js 1.x materialises
+  the defaults; kit, web3.js 3.x, solders and solana-go report absence. The diff tool treats
+  both as equal.
+
+## Not yet covered (proposed work)
+
+Hardware-wallet and browser parsers (Ledger `app-solana` C, once #248 lands; Trezor firmware
+Python; Keystone Rust; Brave C++), x402's three SVM mechanism implementations, Java (`sava`),
+Kotlin (`web3-core`), Swift, Dart and C# SDKs, and the RPC path (`sendTransaction` /
+`simulateTransaction` behaviour per vector against a local validator). The vectors are
+language-neutral JSON; each of these needs only a 100-line harness.

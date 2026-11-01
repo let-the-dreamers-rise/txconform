@@ -1,0 +1,8 @@
+{
+  "@solana/kit": {"ACCEPTS-INVALID": ["legacy-duplicate-address","legacy-program-is-fee-payer","legacy-size-over-1232","v0-lookup-loads-nothing","v0-program-from-lookup","v1-13-signatures","v1-65-addresses","v1-65-instructions","v1-duplicate-address","v1-extra-signature","v1-header-exceeds-addresses","v1-heap-above-max","v1-heap-below-min","v1-heap-not-1k-multiple","v1-heap-zero","v1-ix-account-index-oob","v1-mask-unknown-bit","v1-no-writable-signer","v1-program-index-oob","v1-program-is-fee-payer","v1-size-4097","v1-trailing-byte","v1-zero-signatures"]},
+  "@solana/web3.js": {"ACCEPTS-INVALID": ["legacy-duplicate-address","legacy-program-is-fee-payer","legacy-size-over-1232","v0-lookup-loads-nothing","v0-program-from-lookup","v1-13-signatures","v1-65-addresses","v1-65-instructions","v1-duplicate-address","v1-extra-signature","v1-header-exceeds-addresses","v1-heap-above-max","v1-heap-below-min","v1-heap-not-1k-multiple","v1-heap-zero","v1-ix-account-index-oob","v1-message-in-legacy-envelope","v1-no-writable-signer","v1-program-index-oob","v1-program-is-fee-payer","v1-size-4097","v1-trailing-byte","v1-zero-signatures"],
+                      "REJECTS-VALID": ["v1-config-max-values","v1-priority-fee-only","v1-random"],
+                      "ROUNDTRIP": ["v1-at-limits","v1-computebudget-ix-ignored","v1-empty-config","v1-full-config","v1-heap-max","v1-heap-min","v1-ix-255-accounts","v1-random","v1-size-4096","v1-size-over-1232","v1-zero-instructions","v1-priority-fee-only","v1-config-max-values"]},
+  "solders": {"ACCEPTS-INVALID": ["legacy-duplicate-address","legacy-size-over-1232","v1-extra-signature","v1-size-4097","v1-trailing-byte"]},
+  "solana-go/v2": {"ACCEPTS-INVALID": ["legacy-duplicate-address","legacy-size-over-1232","v1-size-4097"]}
+}

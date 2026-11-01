@@ -1,0 +1,12 @@
+{
+  "name": "txconform-harness-ts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "txconform harnesses for @solana/kit, @solana/web3.js 3.x and @solana/web3.js 1.x",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@solana/kit": "^8.6.0",
+    "@solana/web3.js": "^3.1.1",
+    "web3js1": "npm:@solana/web3.js@^1.99.0"
+  }
+}

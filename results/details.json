@@ -1,0 +1,1183 @@
+{
+ "@solana/kit@8.6.0": {
+  "ACCEPTS-INVALID": [
+   [
+    "v1-mask-unknown-bit-00413",
+    "view_parse: SanitizeError"
+   ],
+   [
+    "v1-heap-not-1k-multiple-00416",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-below-min-00417",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-above-max-00418",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-zero-00419",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-duplicate-address-00420",
+    "runtime_resolved: AccountLoadedTwice"
+   ],
+   [
+    "v1-no-writable-signer-00421",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-zero-signatures-00422",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-header-exceeds-addresses-00423",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-ix-account-index-oob-00424",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-program-index-oob-00425",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-program-is-fee-payer-00426",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-13-signatures-00427",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-addresses-00428",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-instructions-00429",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-size-4097-00430",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-trailing-byte-00431",
+    "view_parse: ParseError"
+   ],
+   [
+    "v1-extra-signature-00442",
+    "view_parse: ParseError"
+   ],
+   [
+    "legacy-size-over-1232-00449",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "legacy-duplicate-address-00450",
+    "runtime_resolved: AccountLoadedTwice"
+   ],
+   [
+    "legacy-program-is-fee-payer-00451",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v0-lookup-loads-nothing-00454",
+    "view_parse: ParseError"
+   ],
+   [
+    "v0-program-from-lookup-00455",
+    "view_sanitize: SanitizeError"
+   ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
+ },
+ "@solana/web3.js@3.1.1": {
+  "ACCEPTS-INVALID": [
+   [
+    "v1-heap-not-1k-multiple-00416",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-below-min-00417",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-above-max-00418",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-zero-00419",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-duplicate-address-00420",
+    "runtime_resolved: AccountLoadedTwice"
+   ],
+   [
+    "v1-no-writable-signer-00421",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-zero-signatures-00422",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-header-exceeds-addresses-00423",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-ix-account-index-oob-00424",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-program-index-oob-00425",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-program-is-fee-payer-00426",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-13-signatures-00427",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-addresses-00428",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-instructions-00429",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-size-4097-00430",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-trailing-byte-00431",
+    "view_parse: ParseError"
+   ],
+   [
+    "v1-extra-signature-00442",
+    "view_parse: ParseError"
+   ],
+   [
+    "legacy-size-over-1232-00449",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "legacy-duplicate-address-00450",
+    "runtime_resolved: AccountLoadedTwice"
+   ],
+   [
+    "legacy-program-is-fee-payer-00451",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v0-lookup-loads-nothing-00454",
+    "view_parse: ParseError"
+   ],
+   [
+    "v0-program-from-lookup-00455",
+    "view_sanitize: SanitizeError"
+   ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
+ },
+ "@solana/web3.js@1.99.0": {
+  "REJECTS-VALID": [
+   [
+    "v1-random-00001",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00003",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00007",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00012",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00013",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00014",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00015",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00019",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00023",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00025",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00026",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00028",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00029",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00030",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00031",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00033",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00034",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00036",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00041",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00044",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00045",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00046",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00047",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00048",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00049",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00050",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00060",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00061",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00064",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00069",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00071",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00072",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00074",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00076",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00077",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00078",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00079",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00083",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00084",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00085",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00089",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00090",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00093",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00096",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00097",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00099",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00100",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00101",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00103",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00104",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00105",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00108",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00111",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00115",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00117",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00123",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00124",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00125",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00126",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00128",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00129",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00131",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00132",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00133",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00135",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00136",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00140",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00142",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00145",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00146",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00148",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00150",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00151",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00155",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00156",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00160",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00169",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00170",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00171",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00172",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00173",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00177",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00179",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00181",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00183",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00184",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00185",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00186",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00187",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00189",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00190",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00191",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00193",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00194",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00197",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00198",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-random-00199",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-config-max-values-00403",
+    "Expected u64 value to be within the safe integer range"
+   ],
+   [
+    "v1-priority-fee-only-00406",
+    "Expected u64 value to be within the safe integer range"
+   ]
+  ],
+  "ROUNDTRIP": [
+   [
+    "v1-random-00002",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00004",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00005",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00006",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00008",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00009",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00010",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00011",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00016",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00017",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00018",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00020",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00021",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00022",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00024",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00027",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00032",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00035",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00037",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00038",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00039",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00040",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00042",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00043",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00051",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00052",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00053",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00054",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00055",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00056",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00057",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00058",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00059",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00062",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00063",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00065",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00066",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00067",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00068",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00070",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00073",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00075",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00080",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00081",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00082",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00086",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00087",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00088",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00091",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00092",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00094",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00095",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00098",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00102",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00106",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00107",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00109",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00110",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00112",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00113",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00114",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00116",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00118",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00119",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00120",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00121",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00122",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00127",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00130",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00134",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00137",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00138",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00139",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00141",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00143",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00144",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00147",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00149",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00152",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00153",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00154",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00157",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00158",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00159",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00161",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00162",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00163",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00164",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00165",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00166",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00167",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00168",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00174",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00175",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00176",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00178",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00180",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00182",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00188",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00192",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00195",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00196",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-random-00200",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-empty-config-00401",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-full-config-00402",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-heap-min-00404",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-heap-max-00405",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-at-limits-00407",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-ix-255-accounts-00408",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-size-4096-00409",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-size-over-1232-00410",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-zero-instructions-00411",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ],
+   [
+    "v1-computebudget-ix-ignored-00412",
+    "ENCODE_ERROR: Serialization of version 1 transaction messages is not supported"
+   ]
+  ],
+  "ACCEPTS-INVALID": [
+   [
+    "v1-heap-not-1k-multiple-00416",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-below-min-00417",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-above-max-00418",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-heap-zero-00419",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-duplicate-address-00420",
+    "runtime_resolved: AccountLoadedTwice"
+   ],
+   [
+    "v1-no-writable-signer-00421",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-zero-signatures-00422",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-header-exceeds-addresses-00423",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-ix-account-index-oob-00424",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-program-index-oob-00425",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-program-is-fee-payer-00426",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v1-13-signatures-00427",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-addresses-00428",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-65-instructions-00429",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-size-4097-00430",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-message-in-legacy-envelope-00446",
+    "view_parse: ParseError"
+   ],
+   [
+    "legacy-size-over-1232-00449",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "legacy-duplicate-address-00450",
+    "runtime_resolved: AccountLoadedTwice"
+   ],
+   [
+    "legacy-program-is-fee-payer-00451",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "v0-lookup-loads-nothing-00454",
+    "view_parse: ParseError"
+   ],
+   [
+    "v0-program-from-lookup-00455",
+    "view_sanitize: SanitizeError"
+   ]
+  ],
+  "FIELD-MISMATCH": []
+ },
+ "solders@0.29.0": {
+  "ACCEPTS-INVALID": [
+   [
+    "v1-size-4097-00430",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "v1-trailing-byte-00431",
+    "view_parse: ParseError"
+   ],
+   [
+    "v1-extra-signature-00442",
+    "view_parse: ParseError"
+   ],
+   [
+    "legacy-size-over-1232-00449",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "legacy-duplicate-address-00450",
+    "runtime_resolved: AccountLoadedTwice"
+   ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
+ },
+ "solana-go/v2@v2.2.0": {
+  "ACCEPTS-INVALID": [
+   [
+    "v1-size-4097-00430",
+    "runtime_static: SanitizeFailure"
+   ],
+   [
+    "legacy-size-over-1232-00449",
+    "view_sanitize: SanitizeError"
+   ],
+   [
+    "legacy-duplicate-address-00450",
+    "runtime_resolved: AccountLoadedTwice"
+   ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
+ }
+}
