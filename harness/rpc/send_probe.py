@@ -13,6 +13,7 @@ import base64, json, os, sys, time, urllib.request
 from solders.keypair import Keypair
 from solders.hash import Hash
 from solders.message import Message, MessageV1, TransactionConfig
+from solders.transaction import VersionedTransaction
 from solders.system_program import transfer, TransferParams
 from solders.pubkey import Pubkey
 
@@ -35,7 +36,7 @@ version = rpc("getVersion", [])["result"].get("solana-core", "?")
 
 payer = Keypair()
 dest = Pubkey.new_unique()
-sig = rpc("requestAirdrop", [str(payer.pubkey()), 2_000_000_000, {"commitment": "confirmed"}])["result"]
+sig = rpc("requestAirdrop", [str(payer.pubkey()), 5_000_000_000, {"commitment": "confirmed"}])["result"]
 balance = 0
 for _ in range(120):
     balance = rpc("getBalance", [str(payer.pubkey()), {"commitment": "confirmed"}])["result"]["value"]
@@ -63,16 +64,16 @@ def build(kind, lamports):
     bh = blockhash()
     if kind == "v1":
         msg = MessageV1.try_compile(payer.pubkey(), [ix], bh, TransactionConfig(compute_unit_limit=50_000))
-        mb = bytes(msg)
-        s = bytes(payer.sign_message(mb))
-        return mb + s  # v1: message || signatures
+        # VersionedTransaction signs over the prefixed message (bytes(MessageV1) omits the
+        # 0x81 version byte; see FINDINGS F10) and emits message || signatures.
+        return bytes(VersionedTransaction(msg, [payer]))
     msg = Message.new_with_blockhash([ix], payer.pubkey(), bh)
     mb = bytes(msg)
     s = bytes(payer.sign_message(mb))
     return compact_u16(1) + s + mb  # legacy: count || signatures || message
 
 cases = []
-lam = 1000
+lam = 100_000_000  # above the rent-exempt minimum for a new system account
 for kind in ("v1", "legacy"):
     for variant in ("clean", "trailing-byte", "extra-signature"):
         for skip_preflight in (False, True):
