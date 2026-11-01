@@ -35,13 +35,14 @@ version = rpc("getVersion", [])["result"].get("solana-core", "?")
 
 payer = Keypair()
 dest = Pubkey.new_unique()
-sig = rpc("requestAirdrop", [str(payer.pubkey()), 2_000_000_000])["result"]
-for _ in range(60):
-    st = rpc("getSignatureStatuses", [[sig]])["result"]["value"][0]
-    if st and st.get("confirmationStatus") in ("confirmed", "finalized"):
+sig = rpc("requestAirdrop", [str(payer.pubkey()), 2_000_000_000, {"commitment": "confirmed"}])["result"]
+balance = 0
+for _ in range(120):
+    balance = rpc("getBalance", [str(payer.pubkey()), {"commitment": "confirmed"}])["result"]["value"]
+    if balance > 0:
         break
     time.sleep(0.5)
-assert rpc("getBalance", [str(payer.pubkey())])["result"]["value"] > 0, "airdrop failed"
+assert balance > 0, f"airdrop failed: signature {sig}, balance still 0 after 60 s"
 
 def compact_u16(n):
     out = bytearray()
