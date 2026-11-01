@@ -19,6 +19,10 @@ enum Cmd {
         seed: u64,
         #[arg(long, default_value_t = 200)]
         random: usize,
+        /// Random single-bit-flip mutations (in addition to every truncation of two templates
+        /// and every header bit flip of a v1 template).
+        #[arg(long, default_value_t = 1000)]
+        mutations: usize,
         #[arg(long)]
         out: String,
     },
@@ -34,9 +38,10 @@ enum Cmd {
 fn main() {
     let cli = Cli::parse();
     match cli.cmd {
-        Cmd::Gen { seed, random, out } => {
+        Cmd::Gen { seed, random, mutations, out } => {
             let mut g = wire::Gen::new(seed);
             g.generate(random);
+            g.mutate(mutations);
             let mut f = std::fs::File::create(&out).expect("create");
             for v in &g.out {
                 writeln!(f, "{}", serde_json::to_string(v).unwrap()).unwrap();
@@ -55,7 +60,7 @@ fn main() {
                 }
                 let v: wire::Vector = serde_json::from_str(&line).expect("vector json");
                 let verdict = judge::judge(&v);
-                if verdict.valid != v.expect_valid {
+                if verdict.valid != v.expect_valid && !v.spec.starts_with("mutation") {
                     disagree += 1;
                     eprintln!(
                         "SPEC/AGAVE DISAGREEMENT {} ({}): spec says valid={} agave says valid={} view={:?}/{:?} runtime={:?}/{:?} sdk={:?}/{:?}",

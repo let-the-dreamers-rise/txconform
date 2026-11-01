@@ -693,6 +693,65 @@ impl Gen {
     }
 }
 
+impl Gen {
+    /// Mutation corpus: single-bit flips and truncations of well-formed transactions.
+    /// The spec does not say what these should do, so `expect_valid` is a placeholder and
+    /// `spec` starts with "mutation"; the judge skips the spec-vs-Agave check for them and
+    /// Agave's verdict is the only ground truth. The point is coverage of every byte
+    /// position with the validator's answer attached.
+    pub fn mutate(&mut self, n_flips: usize) {
+        let mut v1 = self.random_v1(600);
+        v1.ixs.truncate(3);
+        let mut v1c = v1.clone();
+        v1c.config = Config { priority_fee: Some(5000), compute_unit_limit: Some(200_000), loaded_accounts_data_size_limit: Some(64 * 1024), heap_size: Some(MIN_HEAP) };
+        let legacy = self.random_legacy(false);
+        let v0 = self.random_legacy(true);
+        let (v0w, v0r) = self.loaded_for(&v0);
+        let templates: Vec<(&str, Vec<u8>, Vec<[u8; 32]>, Vec<[u8; 32]>)> = vec![
+            ("v1", v1.tx_bytes(), vec![], vec![]),
+            ("v1-config", v1c.tx_bytes(), vec![], vec![]),
+            ("legacy", legacy.tx_bytes(), vec![], vec![]),
+            ("v0", v0.tx_bytes(), v0w, v0r),
+        ];
+        // every truncation point of the small v1 and the legacy template
+        for (name, bytes, lw, lr) in templates.iter() {
+            if *name == "v1-config" || *name == "v0" { continue; }
+            for cut in 0..bytes.len() {
+                self.push_full(
+                    &format!("mut-truncate-{name}"), false, "mutation: truncation",
+                    &format!("{name} template cut to {cut} of {} bytes", bytes.len()),
+                    bytes[..cut].to_vec(), lw.clone(), lr.clone(),
+                );
+            }
+        }
+        // every single-bit flip in the first 48 bytes of the full-config v1 template
+        // (version, header, mask, first config words, lifetime specifier start)
+        let v1bytes = templates[1].1.clone();
+        for byte in 0..48.min(v1bytes.len()) {
+            for bit in 0..8 {
+                let mut b = v1bytes.clone();
+                b[byte] ^= 1 << bit;
+                self.push(
+                    "mut-bitflip-v1-header", false, "mutation: single-bit flip",
+                    &format!("v1-config template, byte {byte} bit {bit} flipped"), b,
+                );
+            }
+        }
+        for _ in 0..n_flips {
+            let t = self.rng.gen_range(0..templates.len());
+            let (name, bytes, lw, lr) = &templates[t];
+            let byte = self.rng.gen_range(0..bytes.len());
+            let bit = self.rng.gen_range(0..8);
+            let mut b = bytes.clone();
+            b[byte] ^= 1 << bit;
+            self.push_full(
+                &format!("mut-bitflip-{name}"), false, "mutation: single-bit flip",
+                &format!("{name} template, byte {byte} bit {bit} flipped"), b, lw.clone(), lr.clone(),
+            );
+        }
+    }
+}
+
 pub fn rng_u8(rng: &mut impl Rng, lo: u8, hi: u8) -> u8 {
     rng.gen_range(lo..=hi)
 }

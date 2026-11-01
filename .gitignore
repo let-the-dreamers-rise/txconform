@@ -3,3 +3,5 @@ harness/ts/node_modules/
 harness/go/harness-go
 .venv/
 __pycache__/
+harness/go-gagliardetto/harness-go-gagliardetto
+harness/rust-primitives/target/

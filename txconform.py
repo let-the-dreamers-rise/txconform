@@ -78,6 +78,8 @@ def main():
             if r is None:
                 cats["MISSING"].append((vid, "no result"))
                 continue
+            if r.get("skip"):
+                continue  # the harness could not judge this vector (e.g. RPC path without lookup tables)
             sdk_ok = r["decode"] and (r["sanitize"] is not False)
             if o["valid"] and not sdk_ok:
                 cats["REJECTS-VALID"].append((vid, r.get("error")))

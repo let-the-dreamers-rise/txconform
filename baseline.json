@@ -4,6 +4,12 @@
    "legacy-duplicate-address",
    "legacy-program-is-fee-payer",
    "legacy-size-over-1232",
+   "mut-bitflip-legacy",
+   "mut-bitflip-v0",
+   "mut-bitflip-v1",
+   "mut-bitflip-v1-config",
+   "mut-bitflip-v1-header",
+   "mut-truncate-legacy",
    "v0-lookup-loads-nothing",
    "v0-program-from-lookup",
    "v1-13-signatures",
@@ -24,13 +30,22 @@
    "v1-size-4097",
    "v1-trailing-byte",
    "v1-zero-signatures"
-  ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
  },
  "@solana/web3.js": {
   "ACCEPTS-INVALID": [
    "legacy-duplicate-address",
    "legacy-program-is-fee-payer",
    "legacy-size-over-1232",
+   "mut-bitflip-legacy",
+   "mut-bitflip-v0",
+   "mut-bitflip-v1",
+   "mut-bitflip-v1-config",
+   "mut-bitflip-v1-header",
+   "mut-truncate-legacy",
    "v0-lookup-loads-nothing",
    "v0-program-from-lookup",
    "v1-13-signatures",
@@ -53,46 +68,61 @@
    "v1-zero-signatures"
   ],
   "REJECTS-VALID": [
+   "mut-bitflip-v1",
    "v1-config-max-values",
    "v1-priority-fee-only",
    "v1-random"
   ],
   "ROUNDTRIP": [
+   "mut-bitflip-v1-config",
+   "mut-bitflip-v1-header",
    "v1-at-limits",
    "v1-computebudget-ix-ignored",
+   "v1-config-max-values",
    "v1-empty-config",
    "v1-full-config",
    "v1-heap-max",
    "v1-heap-min",
    "v1-ix-255-accounts",
+   "v1-priority-fee-only",
    "v1-random",
    "v1-size-4096",
    "v1-size-over-1232",
-   "v1-zero-instructions",
-   "v1-priority-fee-only",
-   "v1-config-max-values"
-  ]
+   "v1-zero-instructions"
+  ],
+  "FIELD-MISMATCH": []
  },
  "solders": {
   "ACCEPTS-INVALID": [
    "legacy-duplicate-address",
    "legacy-size-over-1232",
+   "mut-bitflip-v1-config",
+   "mut-bitflip-v1-header",
    "v1-extra-signature",
    "v1-size-4097",
    "v1-trailing-byte"
-  ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
  },
  "solana-go/v2": {
   "ACCEPTS-INVALID": [
    "legacy-duplicate-address",
    "legacy-size-over-1232",
    "v1-size-4097"
-  ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
  },
  "solana-transaction": {
   "ACCEPTS-INVALID": [
    "legacy-duplicate-address",
    "legacy-size-over-1232",
+   "mut-bitflip-v1",
+   "mut-bitflip-v1-config",
+   "mut-bitflip-v1-header",
    "v1-13-signatures",
    "v1-65-addresses",
    "v1-65-instructions",
@@ -104,6 +134,27 @@
    "v1-heap-zero",
    "v1-size-4097",
    "v1-trailing-byte"
-  ]
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
+ },
+ "gagliardetto/solana-go": {
+  "ACCEPTS-INVALID": [
+   "legacy-duplicate-address",
+   "legacy-size-over-1232",
+   "v1-size-4097"
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
+ },
+ "solana-primitives": {
+  "ACCEPTS-INVALID": [
+   "legacy-duplicate-address"
+  ],
+  "REJECTS-VALID": [],
+  "FIELD-MISMATCH": [],
+  "ROUNDTRIP": []
  }
 }
