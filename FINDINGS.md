@@ -87,13 +87,46 @@ that SDK authors can see which rule they are missing and where Agave keeps it. R
 testee in its own right (`tools/rust_sdk_results.py`), the Rust SDK accepts 13 of the 47
 Agave-invalid vectors, more than solders (5) or solana-go (3).
 
+## F7. `gagliardetto/solana-go` v1.25.0 has exactly the three gaps of `solana-go` v2
+
+- Vectors: `legacy-size-over-1232`, `v1-size-4097`, `legacy-duplicate-address`.
+- Both Go SDKs decode and `Sanitize()` all three; both reject everything else Agave rejects
+  (13 signatures, 65 addresses, heap bounds, trailing bytes). The identical signature across
+  2,400 mutation vectors suggests shared parsing code; whichever is fixed first, the vectors
+  tell the other where to look.
+
+## F8. `solana-primitives` 0.3.0 is the strictest implementation tested; one gap
+
+- Only `legacy-duplicate-address` is accepted (Agave: `AccountLoadedTwice` in the runtime).
+  Everything else, including every mutation vector, matches Agave. Its `deserialize()`
+  enforces exact consumption, size by version, mask bits and sanitize in one call, which is
+  the API shape the other SDKs lack.
+
+## Mutation corpus: what 2,500 bit flips and truncations added
+
+`gen --mutations 1000` adds every truncation point of a v1 and a legacy template (about
+560 vectors), every single-bit flip of the first 48 bytes of a full-config v1 template (384)
+and 1,000 random single-bit flips over v1, v1-with-config, legacy and v0 templates. Agave
+judges each one; the spec does not say what a flipped bit should do, so the Agave verdict is
+the only expectation.
+
+Result: every accepts-invalid vector in the mutation classes maps to a root cause already
+named above. Flipping a config-mask bit or `num_addresses` shifts the layout so the message
+ends early; Agave's packet parser rejects (`ParseError`, frame must end at the buffer), while
+the Rust SDK, kit, web3.js and solders decode the shorter message and ignore the rest (F2).
+Flips inside a config word push `heap_size` out of range (F6 layer). Flips in instruction
+account indexes make them out of bounds (kit and web3.js do not check indexes). web3.js 1.x
+throws on 327 flipped-fee vectors (F4). No new root cause appeared, which is some evidence
+that the 41 hand-written invalid classes cover the format's failure modes; the corpus stays
+in CI so that a future SDK release is measured against 3,000 vectors, not 460.
+
 ## Spec notes surfaced by the generator
 
 - SIMD-0385's constraint table says 64 addresses, 12 signatures and 64 instructions; the
   wire format allows 96, 42 and 255. Agave enforces the smaller numbers in the runtime
   layer, and none of the four non-Rust SDKs except solana-go enforce them anywhere.
 - A ComputeBudget instruction inside a v1 transaction is a valid no-op
-  (`v1-computebudget-ix-ignored`). All six testees correctly report the config from the mask
+  (`v1-computebudget-ix-ignored`). All eight testees correctly report the config from the mask
   and not from the instruction, which is the behaviour the Larger Transaction Sizes guide
   asks wallets for.
 - Unset config fields have runtime defaults of 0 / 0 / 0 / 32 KiB. web3.js 1.x materialises

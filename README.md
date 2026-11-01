@@ -27,11 +27,15 @@ implementation. See [Related work](#related-work) for what does exist and how it
 ```
 oracle/        Rust. (1) spec-derived generator: encodes legacy/v0/v1 transactions from
                the specification text alone, with 41 one-rule-broken mutation classes;
-               (2) judge: runs every vector through Agave's own code and records the verdict
+               (2) mutation corpus: truncations and bit flips of valid templates, thousands per run;
+               (3) judge: runs every vector through Agave's own code and records the verdict
                at each layer a validator applies.
 harness/ts     @solana/kit, @solana/web3.js 3.x, @solana/web3.js 1.x
 harness/py     solders
-harness/go     solana-go v2
+harness/go     solana-go v2 (solana-foundation)
+harness/go-gagliardetto  gagliardetto/solana-go v1
+harness/rust-primitives  solana-primitives (independent Rust implementation)
+harness/rpc    JSON-RPC path against solana-test-validator (CI job)
 tools/rust_sdk_results.py  the Rust SDK itself as a testee (its decode/sanitize/re-encode columns from the oracle)
 txconform.py   diff: SDK result vs Agave verdict -> results/REPORT.md
 vectors/       vectors.jsonl (input) and oracle.jsonl (Agave verdicts + canonical fields)
@@ -54,22 +58,36 @@ reading of SIMD-0385.
 
 ## Results (1 November 2026)
 
-| harness | rejects valid | accepts invalid | field mismatch | round-trip not identical |
+| testee | rejects valid | accepts invalid | field mismatch | round-trip not identical |
 |---|---|---|---|---|
-| `solana-transaction@6.0.0` (Rust SDK as testee) | 0 | 13 | 0 | 0 |
-| `@solana/kit@8.6.0` | 0 | 23 | 0 | 0 |
-| `@solana/web3.js@3.1.1` | 0 | 22 | 0 | 0 |
-| `@solana/web3.js@1.99.0` | 99 | 21 | 0 | 113 |
-| `solders@0.29.0` | 0 | 5 | 0 | 0 |
+| `solana-transaction@6.0.0` (Rust SDK as testee) | 0 | 17 | 0 | 0 |
+| `@solana/kit@8.6.0` | 0 | 89 | 0 | 0 |
+| `@solana/web3.js@3.1.1` | 0 | 58 | 0 | 0 |
+| `@solana/web3.js@1.99.0` | 327 | 48 | 0 | 658 |
+| `solders@0.29.0` | 0 | 7 | 0 | 0 |
 | `solana-go/v2@v2.2.0` | 0 | 3 | 0 | 0 |
+| `gagliardetto/solana-go@v1.25.0` | 0 | 3 | 0 | 0 |
+| `solana-primitives@0.3.0` | 0 | 1 | 0 | 0 |
 
-461 vectors: 414 Agave-valid, 47 Agave-invalid, 56 classes. Full table per class in
-[`results/REPORT.md`](results/REPORT.md); triage in [`FINDINGS.md`](FINDINGS.md).
+3,012 vectors: 1,681 Agave-valid, 1,331 Agave-invalid, 63 classes (22 hand-written valid
+classes, 41 hand-written invalid classes, and mutation classes: every truncation point of two
+templates, every header bit flip of a v1 template, 1,000 random bit flips). Full table per
+class in [`results/REPORT.md`](results/REPORT.md); triage in [`FINDINGS.md`](FINDINGS.md).
+The whole pipeline (generate, judge, eight harnesses, diff) runs in about 15 s on a warm
+build.
 
 "Accepts invalid" is not automatically a bug: codecs such as kit decode structure and leave
 policy to the caller. It becomes a bug when the caller is a wallet, co-signer, paymaster or
 payment facilitator that approves what it decoded. The report says which Agave layer
 rejected each vector so a maintainer can decide.
+
+Two more outputs of every run:
+- `vectors/paykit-wire-vectors.json`: the Agave-rejected vectors in the Solana Foundation
+  pay-kit conformance-harness format (`verify-transaction`, expect `reject` /
+  `invalid-payload`), ready to propose upstream (`tools/paykit_export.py`).
+- The `rpc-path` CI job: every vector sent to `simulateTransaction` on a
+  `solana-test-validator` from the latest Agave release, so the packet-level oracle is checked
+  against what a running node's JSON-RPC answers (`harness/rpc/rpc_harness.py`).
 
 ## Run it
 
