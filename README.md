@@ -87,7 +87,10 @@ Two more outputs of every run:
   `invalid-payload`), ready to propose upstream (`tools/paykit_export.py`).
 - The `rpc-path` CI job: every vector sent to `simulateTransaction` on a
   `solana-test-validator` from the latest Agave release, so the packet-level oracle is checked
-  against what a running node's JSON-RPC answers (`harness/rpc/rpc_harness.py`).
+  against what a running node's JSON-RPC answers (`harness/rpc/rpc_harness.py`), plus an
+  end-to-end send probe (`harness/rpc/send_probe.py`). First result, F9 in FINDINGS.md: the
+  node's RPC accepts a transaction with one trailing byte, returns a signature, and the
+  transaction never lands.
 
 ## Run it
 

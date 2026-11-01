@@ -63,9 +63,10 @@ def build(kind, lamports):
     ix = transfer(TransferParams(from_pubkey=payer.pubkey(), to_pubkey=dest, lamports=lamports))
     bh = blockhash()
     if kind == "v1":
-        msg = MessageV1.try_compile(payer.pubkey(), [ix], bh, TransactionConfig(compute_unit_limit=50_000))
-        # VersionedTransaction signs over the prefixed message (bytes(MessageV1) omits the
-        # 0x81 version byte; see FINDINGS F10) and emits message || signatures.
+        msg = MessageV1.try_compile(payer.pubkey(), [ix], bh, TransactionConfig(compute_unit_limit=50_000, loaded_accounts_data_size_limit=1_000_000))
+        # VersionedTransaction signs over the prefixed message. Note for anyone assembling by
+        # hand: in solders `bytes(msg)` omits the version byte for v0 and v1 (documented); the
+        # signed bytes are `to_bytes_versioned(msg)`.
         return bytes(VersionedTransaction(msg, [payer]))
     msg = Message.new_with_blockhash([ix], payer.pubkey(), bh)
     mb = bytes(msg)

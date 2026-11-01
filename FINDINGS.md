@@ -102,6 +102,37 @@ Agave-invalid vectors, more than solders (5) or solana-go (3).
   enforces exact consumption, size by version, mask bits and sanitize in one call, which is
   the API shape the other SDKs lack.
 
+## F9. Agave's own RPC accepts transactions its block producer drops: a signature is returned and nothing lands
+
+Measured end to end in CI on `solana-test-validator` from Agave 4.4.0 (`harness/rpc/send_probe.py`,
+artifact `txconform-rpc-results`, run 41279892753):
+
+| transaction | `sendTransaction` (preflight on) | `sendTransaction` (preflight off) | landed within 20 s |
+|---|---|---|---|
+| legacy transfer, clean | accepted, signature returned | accepted | yes (slot 118 / 119) |
+| legacy transfer + 1 trailing byte | **accepted, signature returned** (simulation ran and passed) | accepted | **no** |
+| legacy transfer + extra signature | rejected: failed to deserialize | rejected | n/a |
+| v1 transfer, clean | simulation ran (failed on a budget cap I set too low) | accepted | yes (slot 21) |
+| v1 transfer + 1 trailing byte | simulation ran (same budget error, so the format was accepted) | **accepted, signature returned** | **no** |
+| v1 transfer + extra signature | simulation ran | **accepted, signature returned** | **no** |
+
+What happens: `sendTransaction` and `simulateTransaction` deserialize with the SDK path
+(`solana_transaction::versioned::VersionedTransaction`, the error strings name it), which
+tolerates trailing bytes (F2 and F6). The RPC then forwards the original wire bytes to the TPU,
+where `agave-transaction-view` requires the frame to end at the buffer and drops the packet.
+The client sees a signature and "preflight passed"; `getSignatureStatuses` never returns a
+status; no error is ever produced. Across the 3,012-vector corpus the RPC path accepted 4
+Agave-invalid vectors, all of them trailing-byte shapes (`v1-trailing-byte`, `v1-extra-signature`
+and two mutations that shorten the message so bytes remain).
+
+Why it matters: any client whose SDK can emit trailing bytes (an extra signature slot, a
+re-serialization bug, a buffer not trimmed) gets a silent, retry-forever failure instead of an
+error, and a facilitator that "verifies by simulating" approves it. This is not fund loss; it
+is an availability and accounting hole inside the node itself, and it is exactly the layer
+disagreement that makes a validator-judged vector set necessary. Suggested fix (for Anza):
+reject trailing bytes in the RPC's `decode_and_deserialize`, or sanitize with the transaction
+view before accepting; draft in `upstream/agave-issue.md`.
+
 ## Mutation corpus: what 2,500 bit flips and truncations added
 
 `gen --mutations 1000` adds every truncation point of a v1 and a legacy template (about
