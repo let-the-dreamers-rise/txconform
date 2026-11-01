@@ -701,6 +701,9 @@ impl Gen {
     /// position with the validator's answer attached.
     pub fn mutate(&mut self, n_flips: usize) {
         let mut v1 = self.random_v1(600);
+        while v1.ixs.len() < 2 {
+            v1 = self.random_v1(600);
+        }
         v1.ixs.truncate(3);
         let mut v1c = v1.clone();
         v1c.config = Config { priority_fee: Some(5000), compute_unit_limit: Some(200_000), loaded_accounts_data_size_limit: Some(64 * 1024), heap_size: Some(MIN_HEAP) };

@@ -1,29 +1,28 @@
 # txconform report
 
-Vectors: 2411 (oracle = Agave: agave-transaction-view + solana-runtime-transaction + solana-transaction)
+Vectors: 3012 (oracle = Agave: agave-transaction-view + solana-runtime-transaction + solana-transaction)
 
 | harness | valid vectors | invalid vectors | rejects-valid | accepts-invalid | field-mismatch | roundtrip |
 |---|---|---|---|---|---|---|
-| solana-transaction@6.0.0 | 1669 | 742 | 0 | 25 | 0 | 0 |
-| @solana/kit@8.6.0 | 1669 | 742 | 0 | 103 | 0 | 0 |
-| @solana/web3.js@3.1.1 | 1669 | 742 | 0 | 69 | 0 | 0 |
-| @solana/web3.js@1.99.0 | 1669 | 742 | 353 | 59 | 0 | 668 |
-| solders@0.29.0 | 1669 | 742 | 0 | 9 | 0 | 0 |
-| solana-go/v2@v2.2.0 | 1669 | 742 | 0 | 3 | 0 | 0 |
-| gagliardetto/solana-go@v1.25.0 | 1669 | 742 | 0 | 3 | 0 | 0 |
-| solana-primitives@0.3.0 | 1669 | 742 | 0 | 1 | 0 | 0 |
+| solana-transaction@6.0.0 | 1681 | 1331 | 0 | 17 | 0 | 0 |
+| @solana/kit@8.6.0 | 1681 | 1331 | 0 | 89 | 0 | 0 |
+| @solana/web3.js@3.1.1 | 1681 | 1331 | 0 | 58 | 0 | 0 |
+| @solana/web3.js@1.99.0 | 1681 | 1331 | 327 | 48 | 0 | 658 |
+| solders@0.29.0 | 1681 | 1331 | 0 | 7 | 0 | 0 |
+| solana-go/v2@v2.2.0 | 1681 | 1331 | 0 | 3 | 0 | 0 |
+| gagliardetto/solana-go@v1.25.0 | 1681 | 1331 | 0 | 3 | 0 | 0 |
+| solana-primitives@0.3.0 | 1681 | 1331 | 0 | 1 | 0 | 0 |
 
 ## solana-transaction@6.0.0
 
-### ACCEPTS-INVALID: 25 vectors in 16 classes
+### ACCEPTS-INVALID: 17 vectors in 15 classes
 
 | class | n | example | detail |
 |---|---|---|---|
 | `legacy-duplicate-address` | 1 | duplicate static address in a legacy tx (static sanitize passes; runtime rejects) | runtime_resolved: AccountLoadedTwice |
 | `legacy-size-over-1232` | 1 | legacy transaction of 1235 bytes (> 1232) | view_sanitize: SanitizeError |
-| `mut-bitflip-v1` | 2 | v1 template, byte 41 bit 1 flipped | view_parse: ParseError |
-| `mut-bitflip-v1-config` | 4 | v1-config template, byte 4 bit 2 flipped | view_parse: ParseError |
-| `mut-bitflip-v1-header` | 6 | v1-config template, byte 4 bit 2 flipped | view_parse: ParseError |
+| `mut-bitflip-v1-config` | 3 | v1-config template, byte 157 bit 1 flipped | runtime_static: SanitizeFailure |
+| `mut-bitflip-v1-header` | 1 | v1-config template, byte 40 bit 1 flipped | view_parse: ParseError |
 | `v1-13-signatures` | 1 | 13 signatures > max 12 | runtime_static: SanitizeFailure |
 | `v1-65-addresses` | 1 | 65 addresses > max 64 | runtime_static: SanitizeFailure |
 | `v1-65-instructions` | 1 | 65 instructions > max 64 | runtime_static: SanitizeFailure |
@@ -38,19 +37,19 @@ Vectors: 2411 (oracle = Agave: agave-transaction-view + solana-runtime-transacti
 
 ## @solana/kit@8.6.0
 
-### ACCEPTS-INVALID: 103 vectors in 29 classes
+### ACCEPTS-INVALID: 89 vectors in 29 classes
 
 | class | n | example | detail |
 |---|---|---|---|
 | `legacy-duplicate-address` | 1 | duplicate static address in a legacy tx (static sanitize passes; runtime rejects) | runtime_resolved: AccountLoadedTwice |
 | `legacy-program-is-fee-payer` | 1 | program_id_index = 0 | view_sanitize: SanitizeError |
 | `legacy-size-over-1232` | 1 | legacy transaction of 1235 bytes (> 1232) | view_sanitize: SanitizeError |
-| `mut-bitflip-legacy` | 7 | legacy template, byte 201 bit 6 flipped | view_sanitize: SanitizeError |
-| `mut-bitflip-v0` | 12 | v0 template, byte 327 bit 3 flipped | view_sanitize: SanitizeError |
-| `mut-bitflip-v1` | 4 | v1 template, byte 41 bit 1 flipped | view_parse: ParseError |
-| `mut-bitflip-v1-config` | 9 | v1-config template, byte 4 bit 2 flipped | view_parse: ParseError |
-| `mut-bitflip-v1-header` | 47 | v1-config template, byte 1 bit 0 flipped | view_parse: ParseError |
-| `mut-truncate-legacy` | 1 | legacy template cut to 197 of 220 bytes | view_parse: ParseError |
+| `mut-bitflip-legacy` | 1 | legacy template, byte 259 bit 4 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v0` | 2 | v0 template, byte 854 bit 7 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v1` | 8 | v1 template, byte 158 bit 7 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v1-config` | 11 | v1-config template, byte 157 bit 1 flipped | runtime_static: SanitizeFailure |
+| `mut-bitflip-v1-header` | 43 | v1-config template, byte 1 bit 1 flipped | view_parse: ParseError |
+| `mut-truncate-legacy` | 1 | legacy template cut to 805 of 806 bytes | view_parse: ParseError |
 | `v0-lookup-loads-nothing` | 1 | address table lookup with zero writable and zero readonly indexes | view_parse: ParseError |
 | `v0-program-from-lookup` | 1 | program_id_index points at a looked-up address | view_sanitize: SanitizeError |
 | `v1-13-signatures` | 1 | 13 signatures > max 12 | runtime_static: SanitizeFailure |
@@ -74,19 +73,19 @@ Vectors: 2411 (oracle = Agave: agave-transaction-view + solana-runtime-transacti
 
 ## @solana/web3.js@3.1.1
 
-### ACCEPTS-INVALID: 69 vectors in 28 classes
+### ACCEPTS-INVALID: 58 vectors in 28 classes
 
 | class | n | example | detail |
 |---|---|---|---|
 | `legacy-duplicate-address` | 1 | duplicate static address in a legacy tx (static sanitize passes; runtime rejects) | runtime_resolved: AccountLoadedTwice |
 | `legacy-program-is-fee-payer` | 1 | program_id_index = 0 | view_sanitize: SanitizeError |
 | `legacy-size-over-1232` | 1 | legacy transaction of 1235 bytes (> 1232) | view_sanitize: SanitizeError |
-| `mut-bitflip-legacy` | 7 | legacy template, byte 201 bit 6 flipped | view_sanitize: SanitizeError |
-| `mut-bitflip-v0` | 12 | v0 template, byte 327 bit 3 flipped | view_sanitize: SanitizeError |
-| `mut-bitflip-v1` | 3 | v1 template, byte 41 bit 1 flipped | view_parse: ParseError |
-| `mut-bitflip-v1-config` | 4 | v1-config template, byte 4 bit 2 flipped | view_parse: ParseError |
-| `mut-bitflip-v1-header` | 20 | v1-config template, byte 1 bit 0 flipped | view_parse: ParseError |
-| `mut-truncate-legacy` | 1 | legacy template cut to 197 of 220 bytes | view_parse: ParseError |
+| `mut-bitflip-legacy` | 1 | legacy template, byte 259 bit 4 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v0` | 2 | v0 template, byte 854 bit 7 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v1` | 7 | v1 template, byte 158 bit 7 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v1-config` | 9 | v1-config template, byte 157 bit 1 flipped | runtime_static: SanitizeFailure |
+| `mut-bitflip-v1-header` | 16 | v1-config template, byte 1 bit 1 flipped | view_parse: ParseError |
+| `mut-truncate-legacy` | 1 | legacy template cut to 805 of 806 bytes | view_parse: ParseError |
 | `v0-lookup-loads-nothing` | 1 | address table lookup with zero writable and zero readonly indexes | view_parse: ParseError |
 | `v0-program-from-lookup` | 1 | program_id_index points at a looked-up address | view_sanitize: SanitizeError |
 | `v1-13-signatures` | 1 | 13 signatures > max 12 | runtime_static: SanitizeFailure |
@@ -109,18 +108,18 @@ Vectors: 2411 (oracle = Agave: agave-transaction-view + solana-runtime-transacti
 
 ## @solana/web3.js@1.99.0
 
-### ACCEPTS-INVALID: 59 vectors in 26 classes
+### ACCEPTS-INVALID: 48 vectors in 26 classes
 
 | class | n | example | detail |
 |---|---|---|---|
 | `legacy-duplicate-address` | 1 | duplicate static address in a legacy tx (static sanitize passes; runtime rejects) | runtime_resolved: AccountLoadedTwice |
 | `legacy-program-is-fee-payer` | 1 | program_id_index = 0 | view_sanitize: SanitizeError |
 | `legacy-size-over-1232` | 1 | legacy transaction of 1235 bytes (> 1232) | view_sanitize: SanitizeError |
-| `mut-bitflip-legacy` | 7 | legacy template, byte 201 bit 6 flipped | view_sanitize: SanitizeError |
-| `mut-bitflip-v0` | 12 | v0 template, byte 327 bit 3 flipped | view_sanitize: SanitizeError |
-| `mut-bitflip-v1-config` | 3 | v1-config template, byte 284 bit 6 flipped | runtime_static: SanitizeFailure |
-| `mut-bitflip-v1-header` | 13 | v1-config template, byte 2 bit 0 flipped | view_sanitize: SanitizeError |
-| `mut-truncate-legacy` | 3 | legacy template cut to 197 of 220 bytes | view_parse: ParseError |
+| `mut-bitflip-legacy` | 2 | legacy template, byte 259 bit 4 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v0` | 2 | v0 template, byte 854 bit 7 flipped | view_sanitize: SanitizeError |
+| `mut-bitflip-v1-config` | 8 | v1-config template, byte 157 bit 1 flipped | runtime_static: SanitizeFailure |
+| `mut-bitflip-v1-header` | 14 | v1-config template, byte 2 bit 1 flipped | view_sanitize: SanitizeError |
+| `mut-truncate-legacy` | 1 | legacy template cut to 805 of 806 bytes | view_parse: ParseError |
 | `v0-lookup-loads-nothing` | 1 | address table lookup with zero writable and zero readonly indexes | view_parse: ParseError |
 | `v0-program-from-lookup` | 1 | program_id_index points at a looked-up address | view_sanitize: SanitizeError |
 | `v1-13-signatures` | 1 | 13 signatures > max 12 | runtime_static: SanitizeFailure |
@@ -140,21 +139,21 @@ Vectors: 2411 (oracle = Agave: agave-transaction-view + solana-runtime-transacti
 | `v1-size-4097` | 1 | 4097 bytes > max 4096 | runtime_static: SanitizeFailure |
 | `v1-zero-signatures` | 1 | num_required_signatures = 0 | view_sanitize: SanitizeError |
 
-### REJECTS-VALID: 353 vectors in 4 classes
+### REJECTS-VALID: 327 vectors in 4 classes
 
 | class | n | example | detail |
 |---|---|---|---|
-| `mut-bitflip-v1` | 254 | v1 template, byte 20 bit 6 flipped | Expected u64 value to be within the safe integer range |
+| `mut-bitflip-v1` | 228 | v1 template, byte 301 bit 2 flipped | Expected u64 value to be within the safe integer range |
 | `v1-config-max-values` | 1 | u64::MAX priority fee lamports, u32::MAX limits, 256 KiB heap: format-valid (SDKs must not | Expected u64 value to be within the safe integer range |
 | `v1-priority-fee-only` | 1 | only bits 0,1 set; value is 8-byte LE u64 total lamports | Expected u64 value to be within the safe integer range |
 | `v1-random` | 97 | random well-formed v1 transaction | Expected u64 value to be within the safe integer range |
 
-### ROUNDTRIP: 668 vectors in 13 classes
+### ROUNDTRIP: 658 vectors in 13 classes
 
 | class | n | example | detail |
 |---|---|---|---|
-| `mut-bitflip-v1-config` | 248 | v1-config template, byte 82 bit 3 flipped | ENCODE_ERROR: Serialization of version 1 transaction messages is not supported |
-| `mut-bitflip-v1-header` | 307 | v1-config template, byte 3 bit 0 flipped | ENCODE_ERROR: Serialization of version 1 transaction messages is not supported |
+| `mut-bitflip-v1-config` | 239 | v1-config template, byte 347 bit 6 flipped | ENCODE_ERROR: Serialization of version 1 transaction messages is not supported |
+| `mut-bitflip-v1-header` | 306 | v1-config template, byte 2 bit 0 flipped | ENCODE_ERROR: Serialization of version 1 transaction messages is not supported |
 | `v1-at-limits` | 1 | 12 signatures, 64 addresses, 64 instructions: all at the maximum | ENCODE_ERROR: Serialization of version 1 transaction messages is not supported |
 | `v1-computebudget-ix-ignored` | 1 | ComputeBudget instructions present: valid no-ops; effective CU limit is 50000 and fee is 5 | ENCODE_ERROR: Serialization of version 1 transaction messages is not supported |
 | `v1-empty-config` | 1 | mask = 0, no config values; defaults apply (CU limit 0!) | ENCODE_ERROR: Serialization of version 1 transaction messages is not supported |
@@ -169,14 +168,14 @@ Vectors: 2411 (oracle = Agave: agave-transaction-view + solana-runtime-transacti
 
 ## solders@0.29.0
 
-### ACCEPTS-INVALID: 9 vectors in 7 classes
+### ACCEPTS-INVALID: 7 vectors in 7 classes
 
 | class | n | example | detail |
 |---|---|---|---|
 | `legacy-duplicate-address` | 1 | duplicate static address in a legacy tx (static sanitize passes; runtime rejects) | runtime_resolved: AccountLoadedTwice |
 | `legacy-size-over-1232` | 1 | legacy transaction of 1235 bytes (> 1232) | view_sanitize: SanitizeError |
-| `mut-bitflip-v1-config` | 1 | v1-config template, byte 4 bit 2 flipped | view_parse: ParseError |
-| `mut-bitflip-v1-header` | 3 | v1-config template, byte 4 bit 2 flipped | view_parse: ParseError |
+| `mut-bitflip-v1-config` | 1 | v1-config template, byte 163 bit 2 flipped | view_parse: ParseError |
+| `mut-bitflip-v1-header` | 1 | v1-config template, byte 40 bit 1 flipped | view_parse: ParseError |
 | `v1-extra-signature` | 1 | one more signature than num_required_signatures (trailing 64 bytes) | view_parse: ParseError |
 | `v1-size-4097` | 1 | 4097 bytes > max 4096 | runtime_static: SanitizeFailure |
 | `v1-trailing-byte` | 1 | one extra byte after the last signature | view_parse: ParseError |
